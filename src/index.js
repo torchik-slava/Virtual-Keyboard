@@ -88,6 +88,7 @@ view.append(textarea, keyboard);
 document.body.append(view);
 
 let CapsOn = false;
+let lowerCase = true;
 
 function printSymbol(e) {
   textarea.setRangeText(e.target.textContent, textarea.selectionStart, textarea.selectionEnd, 'end');
@@ -113,35 +114,28 @@ function simulateDel() {
 function simulateCapsLock(e) {
   e.target.classList.toggle('on');
   CapsOn = !CapsOn;
-  const checkKey = document.getElementById('KeyQ').textContent;
-  let lowerCase;
-  if (checkKey === BTN_DATA.KeyQ[1] || checkKey === BTN_DATA.KeyQ[3]) {
-    lowerCase = true;
-  } else {
-    lowerCase = false;
-  }
   document.querySelectorAll('span').forEach((btn) => {
-    const oldvalue = btn.textContent;
-    if (btn.firstChild) btn.firstChild.remove();
+    const button = btn;
     if (lowerCase) {
-      btn.append(oldvalue.toUpperCase());
+      button.textContent = button.textContent.toUpperCase();
     } else {
-      btn.append(oldvalue.toLowerCase());
+      button.textContent = button.textContent.toLowerCase();
     }
   });
+  lowerCase = !lowerCase;
 }
 
 function simulateShift() {
-  const checkKey = document.getElementById('BracketLeft').textContent;
+  const checkKey = document.getElementById('Slash').textContent;
   let target;
   switch (checkKey) {
-    case `${BTN_DATA.BracketLeft[1]}`:
+    case `${BTN_DATA.Slash[1]}`:
       target = 2;
       break;
-    case `${BTN_DATA.BracketLeft[2]}`:
+    case `${BTN_DATA.Slash[2]}`:
       target = 1;
       break;
-    case `${BTN_DATA.BracketLeft[3]}`:
+    case `${BTN_DATA.Slash[3]}`:
       target = 4;
       break;
     default:
@@ -149,13 +143,57 @@ function simulateShift() {
   }
   document.querySelectorAll('span').forEach((btn) => {
     const { id } = btn;
+    const isLetter = (btn.textContent.toUpperCase() !== btn.textContent.toLowerCase());
     if (btn.firstChild) {
-      if (CapsOn && id[0] === 'K' && target % 2 === 0) {
+      if (CapsOn && isLetter && target % 2 === 0) {
         btn.firstChild.replaceWith(BTN_DATA[id][target - 1]);
-      } else if (CapsOn && id[0] === 'K' && target % 2 === 1) {
+      } else if (CapsOn && isLetter && target % 2 === 1) {
         btn.firstChild.replaceWith(BTN_DATA[id][target + 1]);
       } else {
         btn.firstChild.replaceWith(BTN_DATA[id][target]);
+      }
+    }
+  });
+}
+
+function changeLang(e) {
+  let clampedBtn;
+  if (e.target.id === 'AltLeft') {
+    clampedBtn = document.getElementById('ControlLeft');
+  } else {
+    clampedBtn = document.getElementById('AltLeft');
+  }
+  if (!clampedBtn.classList.contains('pressed')) return;
+  const checkKey = document.getElementById('Slash').textContent;
+  let target;
+  switch (checkKey) {
+    case `${BTN_DATA.Slash[1]}`:
+      target = 3;
+      localStorage.setItem('lang', 3);
+      break;
+    case `${BTN_DATA.Slash[2]}`:
+      target = 4;
+      localStorage.setItem('lang', 3);
+      break;
+    case `${BTN_DATA.Slash[3]}`:
+      target = 1;
+      localStorage.setItem('lang', 1);
+      break;
+    default:
+      target = 2;
+      localStorage.setItem('lang', 3);
+  }
+  document.querySelectorAll('span').forEach((btn) => {
+    const button = btn;
+    const { id } = btn;
+    if (btn.firstChild) {
+      btn.firstChild.replaceWith(BTN_DATA[id][target]);
+      if (CapsOn) {
+        if (lowerCase) {
+          button.textContent = button.textContent.toLowerCase();
+        } else {
+          button.textContent = button.textContent.toUpperCase();
+        }
       }
     }
   });
@@ -216,6 +254,12 @@ function handleMouseUp(e) {
   textarea.focus();
 }
 
+function handleMouseOut(e) {
+  if ((e.target.id === 'ShiftRight' || e.target.id === 'ShiftLeft') && e.target.classList.contains('pressed')) simulateShift();
+  e.target.classList.remove('pressed');
+  textarea.focus();
+}
+
 function handleKeyDown(e) {
   const existingBtn = document.getElementById(e.code);
   if (!existingBtn || existingBtn.classList.contains('pressed')) return;
@@ -239,43 +283,11 @@ function handleKeyUp(e) {
   existingBtn.dispatchEvent(event);
 }
 
-function changeLang(e) {
-  let clampedBtn;
-  if (e.target.id === 'AltLeft') {
-    clampedBtn = document.getElementById('ControlLeft');
-  } else {
-    clampedBtn = document.getElementById('AltLeft');
-  }
-  if (!clampedBtn.classList.contains('pressed')) return;
-  const checkKey = document.getElementById('KeyQ').textContent;
-  let target;
-  switch (checkKey) {
-    case `${BTN_DATA.KeyQ[1]}`:
-      target = 3;
-      localStorage.setItem('lang', 3);
-      break;
-    case `${BTN_DATA.KeyQ[2]}`:
-      target = 4;
-      localStorage.setItem('lang', 3);
-      break;
-    case `${BTN_DATA.KeyQ[3]}`:
-      target = 1;
-      localStorage.setItem('lang', 1);
-      break;
-    default:
-      target = 2;
-      localStorage.setItem('lang', 3);
-  }
-  document.querySelectorAll('span').forEach((btn) => {
-    const { id } = btn;
-    if (btn.firstChild) btn.firstChild.replaceWith(BTN_DATA[id][target]);
-  });
-}
-
 document.addEventListener('DOMContentLoaded', () => textarea.focus());
 
 keyboard.addEventListener('mousedown', handleMouseDown);
 keyboard.addEventListener('mouseup', handleMouseUp);
+keyboard.addEventListener('mouseout', handleMouseOut);
 
 window.addEventListener('keydown', handleKeyDown);
 window.addEventListener('keyup', handleKeyUp);
