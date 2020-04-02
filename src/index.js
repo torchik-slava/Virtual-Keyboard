@@ -13,7 +13,7 @@ const BTN_DATA = {
   Minus: ['button', '-', '_', '-', '_'],
   Equal: ['button', '=', '+', '=', '+'],
   Backspace: ['long_button', '', '', '', ''],
-  Tab: ['button', '    ', '    ', '    ', '    '],
+  Tab: ['button', '\t', '\t', '\t', '\t'],
   KeyQ: ['button', 'q', 'Q', 'й', 'Й'],
   KeyW: ['button', 'w', 'W', 'ц', 'Ц'],
   KeyE: ['button', 'e', 'E', 'у', 'У'],
@@ -262,14 +262,15 @@ function handleMouseOut(e) {
 
 function handleKeyDown(e) {
   const existingBtn = document.getElementById(e.code);
-  if (!existingBtn || existingBtn.classList.contains('pressed')) return;
-  e.preventDefault();
+  const isCaseChageBtn = e.code === 'CapsLock' || e.code === 'ShiftLeft' || e.code === 'ShiftRight';
+  if (!existingBtn || (isCaseChageBtn && existingBtn.classList.contains('pressed'))) return;
   textarea.focus();
   const event = new Event('mousedown', {
     bubbles: true,
     cancelable: true,
   });
   existingBtn.dispatchEvent(event);
+  e.preventDefault();
 }
 
 function handleKeyUp(e) {
