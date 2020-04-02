@@ -25,34 +25,109 @@
   border-radius: 5px;
   text-align: center;
   vertical-align: middle;
+  font-size: 24px;
   line-height: 73px;
   box-shadow: 5px 5px 5px 3px rgba(0,0,0,0.75);
   cursor: pointer;
   user-select: none;
+  transition: border, 0.2s;
+}
+
+.pressed {
+  box-shadow: inset 2px 2px 2px 1px rgba(0,0,0,0.75);
+  border-radius: 36.5px;
 }
 
 .button:hover, .long_button:hover, .space:hover {
-  border-color: yellow;
+  border-color: lawngreen;
 }
 
 .button {
   width: 75px;
   height: 75px;
-  font-size: 24px;
 }
 
 .long_button {
+  position: relative;
   width: 160px;
   height: 75px;
-  font-size: 20px;
+}
+
+#CapsLock::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  border: 1px solid black;
+  border-radius: 50%;
+  background-color: black;
+}
+
+#CapsLock.on::after {
+  background-color: lawngreen;
 }
 
 .space {
-  width: 500px;
+  width: 585px;
   height: 75px;
-  font-size: 20px;
 }
 
-.pressed {
-  box-shadow: inset 2px 2px 2px 1px rgba(0,0,0,0.75);;
+#Backspace {
+  background: url(img/backspace.png) center no-repeat;
+  background-size: 40%;
+}
+
+#ArrowUp {
+  background: url(img/up.png) center no-repeat;
+}
+
+#ArrowDown {
+  background: url(img/down.png) center no-repeat;
+}
+
+#ArrowLeft {
+  background: url(img/left.png) center no-repeat;
+}
+
+#ArrowRight {
+  background: url(img/right.png) center no-repeat;
+}
+
+#Enter {
+  background: url(img/enter.png) center no-repeat;
+  background-size: 30%;
+}
+
+#Tab {
+  background: url(img/tab.png) center no-repeat;
+  background-size: 40%;
+}
+
+#Delete {
+  background: url(img/delete.png) center no-repeat;
+  background-size: 50%;
+}
+
+#ShiftRight, #ShiftLeft {
+  background: url(img/shift.png) center no-repeat;
+  background-size: 30%;
+}
+
+#ControlRight, #ControlLeft {
+  background: url(img/ctrl.png) center no-repeat;
+}
+
+#AltRight, #AltLeft {
+  background: url(img/alt.png) center no-repeat;
+}
+
+#CapsLock {
+  background: url(img/capslock.png) center no-repeat;
+  background-size: 35%;
+}
+
+#MetaLeft {
+  background: url(img/win.png) center no-repeat;
 }
