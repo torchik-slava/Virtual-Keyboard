@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: "Candara", sans-serif;
 }
 .view {
   margin: 100px auto;
@@ -20,31 +21,40 @@
 
 .button, .long_button, .space {
   display: inline-block;
+  position: relative;
   margin: 5px;
+  width: 75px;
+  height: 75px;
   border: 2px solid black;
   border-radius: 5px;
   text-align: center;
   vertical-align: middle;
-  font-size: 24px;
-  line-height: 73px;
+  font-size: 28px;
+  line-height: 68px;
   box-shadow: 5px 5px 5px 3px rgba(0,0,0,0.75);
   cursor: pointer;
   user-select: none;
-  transition: border, 0.2s;
+  transition: all, 0.2s;
+}
+
+.button::before,
+.long_button::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 71px;
+  height: 71px;
+}
+
+.long_button::before {
+  width: 156px;
 }
 
 .pressed {
   box-shadow: inset 2px 2px 2px 1px rgba(0,0,0,0.75);
   border-radius: 36.5px;
-}
-
-.button:hover, .long_button:hover, .space:hover {
-  border-color: lawngreen;
-}
-
-.button {
-  width: 75px;
-  height: 75px;
+  background-color: lightseagreen;
 }
 
 .long_button {
@@ -74,60 +84,63 @@
   height: 75px;
 }
 
-#Backspace {
+#Backspace::before {
   background: url(img/backspace.png) center no-repeat;
   background-size: 40%;
 }
 
-#ArrowUp {
+#ArrowUp::before {
   background: url(img/up.png) center no-repeat;
 }
 
-#ArrowDown {
+#ArrowDown::before {
   background: url(img/down.png) center no-repeat;
 }
 
-#ArrowLeft {
+#ArrowLeft::before {
   background: url(img/left.png) center no-repeat;
 }
 
-#ArrowRight {
+#ArrowRight::before {
   background: url(img/right.png) center no-repeat;
 }
 
-#Enter {
+#Enter::before {
   background: url(img/enter.png) center no-repeat;
   background-size: 30%;
 }
 
-#Tab {
+#Tab::before {
   background: url(img/tab.png) center no-repeat;
   background-size: 40%;
 }
 
-#Delete {
+#Delete::before {
   background: url(img/delete.png) center no-repeat;
   background-size: 50%;
 }
 
-#ShiftRight, #ShiftLeft {
+#ShiftRight::before,
+#ShiftLeft::before {
   background: url(img/shift.png) center no-repeat;
   background-size: 30%;
 }
 
-#ControlRight, #ControlLeft {
+#ControlRight::before,
+#ControlLeft::before {
   background: url(img/ctrl.png) center no-repeat;
 }
 
-#AltRight, #AltLeft {
+#AltRight::before,
+#AltLeft::before {
   background: url(img/alt.png) center no-repeat;
 }
 
-#CapsLock {
+#CapsLock::before {
   background: url(img/capslock.png) center no-repeat;
   background-size: 35%;
 }
 
-#MetaLeft {
+#MetaLeft::before {
   background: url(img/win.png) center no-repeat;
 }
