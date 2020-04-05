@@ -172,12 +172,42 @@ export default class Keyboard {
   }
 
   moveVertically(e) {
-    if (e.target.id === 'ArrowUp') {
-      this.textarea.selectionStart += 1;
-    } else {
-      this.textarea.selectionStart -= 1;
+    const value = this.textarea.value.split('\n');
+    if (value.length === 1) return;
+    const position = this.textarea.selectionStart;
+    let temp = -1;
+    let newPos = 0;
+    for (let i = 0; i < value.length; i += 1) {
+      temp += value[i].length + 1;
+      if (position <= temp) {
+        if (e.target.id === 'ArrowUp') {
+          if (i === 0) break;
+          const diff = value[i].length - value[i - 1].length;
+          const isLast = temp - position === 0;
+          if (diff > 0 && isLast) {
+            newPos = position - value[i - 1].length - 1 - diff;
+          } else if (diff && position - (temp - value[i].length) > value[i - 1].length) {
+            newPos = temp - value[i].length - 1;
+          } else {
+            newPos = position - value[i - 1].length - 1;
+          }
+        } else {
+          if (i === value.length - 1) break;
+          const diff = value[i].length - value[i + 1].length;
+          const isLast = temp - position === 0;
+          if (diff > 0 && isLast) {
+            newPos = temp + value[i + 1].length + 1;
+          } else if (diff && position - (temp - value[i].length) > value[i + 1].length) {
+            newPos = temp + value[i + 1].length + 1;
+          } else {
+            newPos = position + value[i].length + 1;
+          }
+        }
+        this.textarea.selectionStart = newPos;
+        this.textarea.selectionEnd = newPos;
+        break;
+      }
     }
-    this.textarea.selectionEnd = this.textarea.selectionStart;
   }
 
   handleMouseDown(e) {
