@@ -117,6 +117,7 @@ export default class Keyboard {
         }
       }
     });
+    this.lowerCase = !this.lowerCase;
   }
 
   changeLang(e) {
