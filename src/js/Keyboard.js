@@ -254,6 +254,7 @@ export default class Keyboard {
   }
 
   handleKeyDown(e) {
+    if (e.code !== 'F12') e.preventDefault();
     const existingBtn = document.getElementById(e.code);
     const isCaseChageBtn = e.code === 'CapsLock' || e.code === 'ShiftLeft' || e.code === 'ShiftRight';
     if (!existingBtn || (isCaseChageBtn && existingBtn.classList.contains('pressed'))) return;
@@ -263,7 +264,6 @@ export default class Keyboard {
       cancelable: true,
     });
     existingBtn.dispatchEvent(event);
-    e.preventDefault();
   }
 
   handleKeyUp(e) {
