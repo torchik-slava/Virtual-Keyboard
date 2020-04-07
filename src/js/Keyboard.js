@@ -174,7 +174,6 @@ export default class Keyboard {
 
   moveVertically(e) {
     const value = this.textarea.value.split('\n');
-    if (value.length === 1) return;
     const position = this.textarea.selectionStart;
     let temp = -1;
     let newPos = 0;
@@ -193,7 +192,10 @@ export default class Keyboard {
             newPos = position - value[i - 1].length - 1;
           }
         } else {
-          if (i === value.length - 1) break;
+          if (i === value.length - 1) {
+            newPos = this.textarea.value.length;
+            break;
+          }
           const diff = value[i].length - value[i + 1].length;
           const isLast = temp - position === 0;
           if (diff > 0 && isLast) {
@@ -204,11 +206,11 @@ export default class Keyboard {
             newPos = position + value[i].length + 1;
           }
         }
-        this.textarea.selectionStart = newPos;
-        this.textarea.selectionEnd = newPos;
         break;
       }
     }
+    this.textarea.selectionStart = newPos;
+    this.textarea.selectionEnd = newPos;
   }
 
   handleMouseDown(e) {
